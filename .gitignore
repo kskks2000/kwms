@@ -1,0 +1,17 @@
+.DS_Store
+
+# Local secrets
+.env
+.env.*
+backend/.env
+backend/.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# Flutter/Dart
+.dart_tool/
+build/
