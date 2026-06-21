@@ -50,9 +50,13 @@ uvicorn app.main:app --reload
 ## Deployment
 
 - Deploy frontend web output from `frontend/build/web`.
+- Production host is `www.metaseoul.net`.
 - Production verification target is `http://www.metaseoul.net`.
-- Only deploy to production when the user asks for deployment or the task clearly requires it.
-- After deployment, verify that the served production bundle matches the local release build when practical.
+- Always deploy completed application changes to `www.metaseoul.net` by SFTP before reporting the task as complete.
+- Do not commit or write SFTP credentials to repository files; load credentials from the local environment or another secure local source.
+- After every SFTP deployment, test the live site at `http://www.metaseoul.net`.
+- Do not mark the task complete until the SFTP deployment has succeeded and the live production test has passed.
+- If SFTP deployment or live production testing fails, report the task as not complete and include the exact blocker.
 
 ## Verification
 
@@ -64,5 +68,8 @@ flutter analyze
 flutter test
 flutter build web --release
 ```
+
+- After the release build succeeds, deploy `frontend/build/web` to `www.metaseoul.net` by SFTP.
+- Verify the deployed site at `http://www.metaseoul.net` before final completion.
 
 For docs-only changes, tests are not required.

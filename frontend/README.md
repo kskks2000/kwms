@@ -16,7 +16,12 @@ Email/password and Google sign-in are wired through Firebase Auth.
 
 - Firebase project: `kwms-af60c`
 - Registered platform: Web
-- Config style: `--dart-define` values consumed by `lib/firebase_options.dart`
+- Config style: client-safe values in `frontend/.env`, consumed through
+  `--dart-define-from-file`
+
+Keep server-only secrets such as DB passwords, SFTP credentials, and private API
+tokens out of `frontend/.env`. They belong in the root/backend `.env` files and
+must not be passed into Flutter web builds.
 
 Enable the Email/Password and Google providers in Firebase Console:
 
@@ -26,19 +31,18 @@ Copy the web app config values from Firebase Console:
 
 Project settings > General > Your apps > Web app > SDK setup and configuration
 
-Then run the app with:
+Then create a local env file:
 
 ```bash
-flutter run -d chrome \
-  --dart-define=FIREBASE_WEB_API_KEY=... \
-  --dart-define=FIREBASE_WEB_APP_ID=... \
-  --dart-define=FIREBASE_WEB_MESSAGING_SENDER_ID=... \
-  --dart-define=FIREBASE_WEB_PROJECT_ID=kwms-af60c \
-  --dart-define=FIREBASE_WEB_AUTH_DOMAIN=kwms-af60c.firebaseapp.com \
-  --dart-define=FIREBASE_WEB_STORAGE_BUCKET=kwms-af60c.firebasestorage.app
+cp .env.example .env
 ```
 
-Use the same defines with `flutter build web --release`.
+Fill in the Firebase values in `.env`, then run or build with:
+
+```bash
+flutter run -d chrome --dart-define-from-file=.env
+flutter build web --release --dart-define-from-file=.env
+```
 
 For Android and iOS, set the real package and bundle identifiers first, then run:
 
